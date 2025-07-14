@@ -1,5 +1,5 @@
 {
-  "name": "web-template",
+  "name": "Todo-List",
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nibblenod/web-template.git"
+    "url": "git+https://github.com/nibblenod/Todo-List.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nibblenod/web-template/issues"
+    "url": "https://github.com/nibblenod/Todo-List/issues"
   },
-  "homepage": "https://github.com/nibblenod/web-template#readme",
+  "homepage": "https://github.com/nibblenod/Todo-List#readme",
   "description": "",
   "devDependencies": {
     "css-loader": "^7.1.2",

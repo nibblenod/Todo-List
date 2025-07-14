@@ -1,3 +1,58 @@
-body {
-    background-color: rebeccapurple;
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+:root {
+
+}
+
+html,
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+}
+header {
+    text-align: center;
+    padding: 1rem;
+    font-family: "Josefin Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.5rem;
+    border-bottom: 2px solid black;
+    width: 50%;
+    margin: 0 auto 2.8rem;
+}
+
+main {
+    display: flex;
+}
+main h2 {
+    text-align: center;
+}
+aside {
+    flex-grow: 0.8;
+}
+section {
+    flex-grow: 3.5;
+}
+
+
+
