@@ -6,15 +6,12 @@
     box-sizing: border-box;
 }
 
-:root {
-
-}
-
 html,
 body {
     font-family: 'Open Sans', sans-serif;
     line-height: 1.6;
     scroll-behavior: smooth;
+    height: 100vh;
 }
 
 a {
@@ -43,12 +40,17 @@ header {
 
 main {
     display: flex;
+    height: calc(100% - 9.7rem);
 }
 main h2 {
     text-align: center;
+    font-size: 1.6rem;
 }
 aside {
     flex-grow: 0.8;
+    border-right: 2px solid black;
+    height: 100%;
+    position: sticky;
 }
 section {
     flex-grow: 3.5;
