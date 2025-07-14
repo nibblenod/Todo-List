@@ -10,7 +10,12 @@ export class DisplayController
     {
         this.refreshProjects();
         const addProjectButton = document.querySelector(".projects-container > button")
-        // addProjectButton.addEventListener("click", );
+        const dialog = document.querySelector('dialog');
+        addProjectButton.addEventListener("click", function()
+        {
+            dialog.showModal();
+        });
+
     }
 
     refreshProjects()

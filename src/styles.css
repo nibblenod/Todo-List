@@ -78,10 +78,15 @@ section {
     line-height: normal;
     cursor: pointer;
 }
-.projects-container button:active
-{
+.projects-container button:active {
     scale: 0.99;
 }
+dialog {
+    top: 50%;
+    margin: 0 auto;
+}
+
+
 
 
 
