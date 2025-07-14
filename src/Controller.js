@@ -4,6 +4,10 @@ export class Controller {
     #_currentProjects = new Map();
     constructor() {
         this.#_currentProjects.set("Default", new Project("Default", new Map()))
+        this.#_currentProjects.set("Lmao", new Project("Lmao", new Map()))
+        this.#_currentProjects.set("Hehe", new Project("Hehe", new Map()))
+        this.#_currentProjects.set("Booga", new Project("Booga", new Map()))
+
     }
     createProject(title)
     {

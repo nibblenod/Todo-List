@@ -1,17 +1,11 @@
 import {Todo, priority} from "./Models/Todo.js"
 import {Project} from "./Models/Project.js"
+import {DisplayController} from "./DisplayController"
 import "./styles.css";
 import {Controller} from "./Controller.js";
 
-const projectController = new Controller();
+const disController = new DisplayController(new Controller());
 
-let currentProject = 'Default';
-
-function changeActiveProject(projectTitle)
-{
-    currentProject = projectTitle;
-}
-
-
+disController.init();
 
 

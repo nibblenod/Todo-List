@@ -1,3 +1,4 @@
+import {v4 as uuidv4} from 'uuid';
 export class Todo {
     constructor(title, description, dueDate, priority, notes, checklist)
     {
@@ -7,6 +8,7 @@ export class Todo {
         this.priority = priority;
         this.notes = notes;
         this.checklist = checklist;
+        this.id = uuidv4();
     }
 }
 
