@@ -1,39 +1,41 @@
 import {Project} from "./Models/Project";
+import {v4 as uuidv4} from 'uuid';
 export class Controller {
 
     #_currentProjects = new Map();
     constructor() {
-        this.#_currentProjects.set("Default", new Project("Default", new Map()))
-
+        this.createProject("Default");
     }
     createProject(title)
     {
-        this.#_currentProjects.set(title, new Project(title, new Map()));
+        const newProject = new Project(title, new Map());
+        this.#_currentProjects.set(newProject.id, newProject);
     }
-    deleteProject(title)
+    deleteProject(projectId)
     {
-        return this.#_currentProjects.delete(title);
+        return this.#_currentProjects.delete(projectId);
     }
     get projects()
     {
         return this.#_currentProjects;
     }
-    addTodo(todo, projectTitle)
-    {
-        if (this.#_currentProjects.has(projectTitle))
-        {
-            this.#_currentProjects.get(projectTitle).todos.set(todo.title, todo);
-            return true;
-        }
-        else return false;
-    }
-    deleteTodo(todoTitle, projectTitle)
-    {
-        if (this.#_currentProjects.has(projectTitle))
-        {
-            return this.#_currentProjects.get(projectTitle).todos.delete(todoTitle);
-        }
-    }
+    // addTodo(todo, projectId)
+    // {
+    //     if (this.#_currentProjects.has(projectId))
+    //     {
+    //         const newTodo = new Todo()
+    //         this.#_currentProjects.get(projectId).todos.set(todoId, todo);
+    //         return true;
+    //     }
+    //     else return false;
+    // }
+    // deleteTodo(todoId, projectId)
+    // {
+    //     if (this.#_currentProjects.has(projectId))
+    //     {
+    //         return this.#_currentProjects.get(projectId).todos.delete(todoId);
+    //     }
+    // }
 
 
 
