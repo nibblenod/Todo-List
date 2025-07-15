@@ -15,14 +15,17 @@
 <main>
     <aside class="projects">
         <h2>Projects</h2>
-        <dialog>
-                <button autofocus>Close</button>
-                <input type="text"/>
-                <button class="submit" autofocus>Add Project</button>
+        <dialog class="add-project-dialog">
+            <button class="cool-btn cool-btn-inverted" autofocus>Close</button>
+            <form>
+                <label>Enter project's title: </label>
+                <input minlength="3" required placeholder="Enter project title" type="text"/>
+                <button type="submit" class="cool-btn cool-btn-inverted">Add Project</button>
+            </form>
         </dialog>
 
         <div class="projects-container">
-            <button>Add New Project</button>
+            <button class="cool-btn">Add New Project</button>
         </div>
 
     </aside>

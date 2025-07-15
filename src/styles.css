@@ -41,7 +41,7 @@ header {
 
 main {
     display: flex;
-    height: calc(100% - 9.7rem);
+    height: calc(100% - 13rem);
 }
 main h2 {
     text-align: center;
@@ -50,7 +50,7 @@ main h2 {
 aside {
     flex-grow: 0.8;
     border-right: 2px solid black;
-    height: 100%;
+    min-height: 100%;
     position: sticky;
 }
 section {
@@ -61,23 +61,34 @@ section {
     font-size: 1.2rem;
     font-weight: 500;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
 }
-.projects-container div {
+.projects-container > .project {
     border: 1px solid black;
     border-radius: 5px;
     transition: all 0.05s linear 0.05s;
     cursor: pointer;
+    flex-grow: 1;
+    max-height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.projects-container div:hover
+.projects-container div:hover, .cool-btn:hover
 {
     scale: 1.05;
     background: black;
     color: white;
 }
+
+
 .projects-container > * {
     margin-bottom: 1.2rem;
 }
-.projects-container button{
+.cool-btn{
     border: 1px solid black;
     border-radius: 5px;
     margin: 0;
@@ -90,13 +101,43 @@ section {
     line-height: normal;
     cursor: pointer;
 }
-.projects-container button:active {
+.cool-btn:active {
     scale: 0.99;
+    background: black;
+    color: white;
 }
 dialog {
     top: 50%;
     margin: 0 auto;
+    padding: 0.5rem;
+    background: #3a3a3a;
+    border-radius: 10px;
+    color: white;
 }
+
+dialog form {
+    padding: 2rem;
+}
+
+dialog form input {
+    background: #cecece;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-right: 50px;
+    margin-left: 10px;
+}
+
+.cool-btn-inverted:hover {
+    background: white;
+    color: black;
+    outine: 1px solid white;
+}
+
+.project.selected {
+    background: black;
+    color: white;
+}
+
 
 
 
