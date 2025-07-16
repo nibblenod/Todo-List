@@ -1,5 +1,6 @@
 import {Controller} from "./Controller";
 import {Project} from "./Models/Project";
+import {Todo} from "./Models/Todo";
 
 export class DisplayController
 {
@@ -10,16 +11,66 @@ export class DisplayController
     init()
     {
         this.refreshProjects();
+        this.#_projectInit();
+        this.#_todoInit();
+    }
 
+
+    #_todoInit()
+    {
+        const addNewTodoButton = document.querySelector(".add-todo-button");
+        const todoDialog = document.querySelector("dialog.todo-dialog")
+        const todoDialogForm = document.querySelector('dialog.todo-dialog form');
+
+        addNewTodoButton.addEventListener("click", () => {
+            todoDialog.showModal();
+        })
+        todoDialogForm.addEventListener("submit", (event) => {
+            event.preventDefault()
+
+        })
+
+        this.#_checklistInit();
+
+
+    }
+
+    #_checklistInit()
+    {
+        const addNewTaskButton = document.querySelector(".add-task-btn")
+        const checklists = document.querySelector(".checklist-container .checklists");
+
+        addNewTaskButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            const div = document.createElement("div");
+            const deleteButton = document.createElement("button");
+
+            deleteButton.addEventListener("click", (event) => {
+                event.target.parentElement.remove();
+            });
+
+            deleteButton.textContent = "❌";
+            deleteButton.classList.add("delete-btn");
+            const input = document.createElement("input");
+            input.required = true;
+            input.classList.add("task");
+            div.appendChild(deleteButton);
+            div.appendChild(input);
+            checklists.appendChild(div);
+        })
+    }
+
+    #_projectInit()
+    {
         const addProjectButton = document.querySelector(".projects-container > button")
-        const dialog = document.querySelector('dialog');
-        const projectDialogForm = document.querySelector('dialog form')
-        const projectInput = document.querySelector('dialog input');
-        const closeDialogButton = document.querySelector('dialog > button');
+        const dialog = document.querySelector('dialog.add-project-dialog');
+        const projectDialogForm = document.querySelector('dialog.add-project-dialog form')
+        const projectInput = document.querySelector('dialog.add-project-dialog input');
+        const closeDialogButton = document.querySelector('dialog.add-project-dialog > button');
 
         closeDialogButton.addEventListener("click",  function()
         {
-           dialog.close();
+            dialog.close();
         });
         addProjectButton.addEventListener("click", function()
         {
@@ -30,7 +81,6 @@ export class DisplayController
             this.addProject(projectInput.value)
             projectInput.value = "";
         });
-
     }
 
     addProject(title)
