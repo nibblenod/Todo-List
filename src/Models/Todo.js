@@ -9,6 +9,7 @@ export class Todo {
         this.notes = notes;
         this.checklist = checklist;
         this.id = uuidv4();
+        this.done = false;
     }
 }
 

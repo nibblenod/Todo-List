@@ -11,6 +11,7 @@ export class DisplayController
     init()
     {
         this.refreshProjects();
+        this.refreshTodos();
         this.#_projectInit();
         this.#_todoInit();
     }
@@ -22,17 +23,40 @@ export class DisplayController
         const todoDialog = document.querySelector("dialog.todo-dialog")
         const todoDialogForm = document.querySelector('dialog.todo-dialog form');
 
+
         addNewTodoButton.addEventListener("click", () => {
             todoDialog.showModal();
         })
         todoDialogForm.addEventListener("submit", (event) => {
             event.preventDefault()
+            this.#_todoValuesRetrieverDialog();
 
         })
 
         this.#_checklistInit();
 
+    }
 
+    #_todoValuesRetrieverDialog()
+    {
+        const title = document.querySelector(".todo-dialog form input#title")
+        const description = document.querySelector(".todo-dialog form textarea#description")
+        const dueDate = document.querySelector(".todo-dialog form input#date")
+        const priority = document.querySelector('.todo-dialog form input[type="radio"]:checked')
+        const notes = document.querySelector('.todo-dialog form textarea#notes');
+        const checkListElement = document.querySelector(".todo-dialog form .checklists")
+
+        const checklist = new Array();
+
+        for (const item of checkListElement.children)
+        {
+            checklist.push(item.querySelector('input').value);
+        }
+        const date = new Date(dueDate.value);
+
+        let priorityValue = null;
+        if (priority) priorityValue = priority.value;
+        this.addTodo(title.value, description.value, date, priorityValue, notes.value, checklist);
     }
 
     #_checklistInit()
@@ -83,10 +107,64 @@ export class DisplayController
         });
     }
 
+    addTodo(title, description, dueDate, priority, notes, checklist)
+    {
+        this.#_controller.createTodo(...arguments);
+        this.refreshTodos();
+    }
     addProject(title)
     {
         this.#_controller.createProject(title);
         this.refreshProjects();
+    }
+
+    refreshTodos() {
+        const todoList = document.querySelector(".todos .todolist ul")
+        const currentTodos = this.#_controller.projects.get(this.#_controller.currentProject).todos;
+
+        while (todoList.children.length != 0)
+        {
+            todoList.children[0].remove();
+        }
+
+        for (const todo of currentTodos)
+        {
+            const listItem = document.createElement("li");
+
+
+            const checkmarkDiv = document.createElement("div");
+
+            checkmarkDiv.addEventListener("click", () => {
+
+                console.log("holy crap")
+                if (this.#_controller.projects.get(this.#_controller.currentProject).todos.get(todo[1].id).done === true)
+                {
+                    this.#_controller.projects.get(this.#_controller.currentProject).todos.get(todo[1].id).done = false;
+                    this.refreshTodos();
+                }
+
+            });
+            listItem.dataset.id = todo[1].id;
+
+            if (todo[1].done === true)
+            {
+                checkmarkDiv.textContent = "✅";
+            }
+            else checkmarkDiv.textContent = " ";
+            checkmarkDiv.classList.add("checkmark");
+            listItem.appendChild(checkmarkDiv);
+
+            const todoDiv = document.createElement("div");
+            todoDiv.textContent = todo[1].title;
+            todoDiv.classList.add("todo");
+            listItem.appendChild(todoDiv);
+
+            todoList.appendChild(listItem);
+        }
+
+
+
+
     }
 
     refreshProjects()

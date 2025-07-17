@@ -1,5 +1,6 @@
 import {Project} from "./Models/Project";
 import {v4 as uuidv4} from 'uuid';
+import {Todo} from "./Models/Todo";
 export class Controller {
 
     #_currentProjects = new Map();
@@ -30,23 +31,19 @@ export class Controller {
         return this.#_currentProjectId;
     }
 
-    // addTodo(todo, projectId)
-    // {
-    //     if (this.#_currentProjects.has(projectId))
-    //     {
-    //         const newTodo = new Todo()
-    //         this.#_currentProjects.get(projectId).todos.set(todoId, todo);
-    //         return true;
-    //     }
-    //     else return false;
-    // }
+    createTodo(title, description, dueDate, priority, notes, checklist)
+    {
+        const newTodo = new Todo(title, description, dueDate, priority, notes, checklist);
+        this.#_currentProjects.get(this.#_currentProjectId).todos.set(newTodo.id, newTodo);
+    }
     // deleteTodo(todoId, projectId)
     // {
     //     if (this.#_currentProjects.has(projectId))
     //     {
     //         return this.#_currentProjects.get(projectId).todos.delete(todoId);
     //     }
-    // }
+    // }weqa
+
 
 
 
