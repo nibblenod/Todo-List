@@ -52,9 +52,11 @@ aside {
     border-right: 2px solid black;
     min-height: 100%;
     position: sticky;
+
 }
 section {
     flex-grow: 3.5;
+    flex-basis: 1px;
 }
 .projects-container {
     padding: 1.5rem;
@@ -147,6 +149,12 @@ dialog form input, textarea {
     justify-content: center;
     margin-bottom: 2.5rem;
 }
+.todolist ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+}
 .todolist li{
     display: flex;
     gap: 1rem;
@@ -160,10 +168,28 @@ dialog form input, textarea {
 
 }
 
+.todolist li .todo:hover {
+    outline: 3px solid black;
+    scale: 1.005;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 .todolist li .checkmark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
     padding: 0.6rem;
     border-radius: 100%;
     outline: 1px solid black;
+    cursor: pointer;
+}
+.todolist li .checkmark:hover {
+    outline: 3px solid black;
+    scale: 1.1;
 }
 
 dialog.todo-dialog {
@@ -203,6 +229,11 @@ dialog.todo-dialog {
     margin-top: 1rem;
     background: white;
     color: black;
+}
+
+.todolist .todo.done {
+    background: black;
+    color: white;
 }
 
 

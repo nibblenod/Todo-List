@@ -131,18 +131,12 @@ export class DisplayController
         {
             const listItem = document.createElement("li");
 
-
             const checkmarkDiv = document.createElement("div");
 
             checkmarkDiv.addEventListener("click", () => {
 
-                console.log("holy crap")
-                if (this.#_controller.projects.get(this.#_controller.currentProject).todos.get(todo[1].id).done === true)
-                {
-                    this.#_controller.projects.get(this.#_controller.currentProject).todos.get(todo[1].id).done = false;
-                    this.refreshTodos();
-                }
-
+                todo[1].done = !todo[1].done;
+                this.refreshTodos();
             });
             listItem.dataset.id = todo[1].id;
 
@@ -157,6 +151,12 @@ export class DisplayController
             const todoDiv = document.createElement("div");
             todoDiv.textContent = todo[1].title;
             todoDiv.classList.add("todo");
+
+            if (todo[1].done)
+            {
+                todoDiv.classList.add("done");
+            }
+            else todoDiv.classList.remove("done");
             listItem.appendChild(todoDiv);
 
             todoList.appendChild(listItem);
@@ -197,6 +197,7 @@ export class DisplayController
         this.#_controller.changeCurrentProject(projectId);
         const newActiveProject = document.querySelector(`.project[data-id = "${projectId}"]`);
         newActiveProject.classList.add("selected");
+        this.refreshTodos();
     }
 
 
