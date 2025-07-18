@@ -68,6 +68,10 @@ section {
     height: 100%;
     overflow: auto;
 }
+
+.projects-container button{
+    margin-bottom: 1rem;
+}
 .projects-container > .project {
     border: 1px solid black;
     border-radius: 5px;

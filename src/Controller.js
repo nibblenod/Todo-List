@@ -16,11 +16,12 @@ export class Controller {
     {
         const newProject = new Project(title, new Map());
         this.#_currentProjects.set(newProject.id, newProject);
+        if (this.currentProject === null) this.currentProject = newProject.id;
         return newProject.id;
     }
-    deleteProject(projectId)
+    deleteProject()
     {
-        return this.#_currentProjects.delete(projectId);
+        return this.#_currentProjects.delete(this.#_currentProjectId);
     }
     get projects()
     {
@@ -29,6 +30,10 @@ export class Controller {
     get currentProject()
     {
         return this.#_currentProjectId;
+    }
+    set currentProject(projectId)
+    {
+        this.#_currentProjectId = projectId;
     }
 
     createTodo(title, description, dueDate, priority, notes, checklist)

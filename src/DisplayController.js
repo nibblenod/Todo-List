@@ -25,6 +25,7 @@ export class DisplayController
 
 
         addNewTodoButton.addEventListener("click", () => {
+            if (this.#_controller.currentProject !== null)
             todoDialog.showModal();
         })
         todoDialogForm.addEventListener("submit", (event) => {
@@ -57,6 +58,12 @@ export class DisplayController
         let priorityValue = null;
         if (priority) priorityValue = priority.value;
         this.addTodo(title.value, description.value, date, priorityValue, notes.value, checklist);
+        title.value = "";
+        description.value = "";
+        dueDate.value = "";
+        if (priority) priority.checked = false;
+        notes.value = "";
+        checkListElement.textContent = "";
     }
 
     #_checklistInit()
@@ -87,11 +94,16 @@ export class DisplayController
     #_projectInit()
     {
         const addProjectButton = document.querySelector(".projects-container > button")
+        const deleteProjectButton = addProjectButton.nextElementSibling;
         const dialog = document.querySelector('dialog.add-project-dialog');
         const projectDialogForm = document.querySelector('dialog.add-project-dialog form')
         const projectInput = document.querySelector('dialog.add-project-dialog input');
         const closeDialogButton = document.querySelector('dialog.add-project-dialog > button');
 
+
+        deleteProjectButton.addEventListener("click", () => {
+            this.deleteProject();
+        });
         closeDialogButton.addEventListener("click",  function()
         {
             dialog.close();
@@ -100,6 +112,7 @@ export class DisplayController
         {
             dialog.showModal();
         });
+
         projectDialogForm.addEventListener("submit", (event) => {
             event.preventDefault();
             this.addProject(projectInput.value)
@@ -107,6 +120,17 @@ export class DisplayController
         });
     }
 
+    deleteProject()
+    {
+        this.#_controller.deleteProject();
+        const currentProjects = this.#_controller.projects;
+        if (currentProjects.size > 0)
+        {
+            this.changeActiveProject(currentProjects.keys().next().value);
+        }
+        else this.changeActiveProject(null);
+        this.refreshProjects();
+    }
     addTodo(title, description, dueDate, priority, notes, checklist)
     {
         this.#_controller.createTodo(...arguments);
@@ -120,12 +144,20 @@ export class DisplayController
 
     refreshTodos() {
         const todoList = document.querySelector(".todos .todolist ul")
-        const currentTodos = this.#_controller.projects.get(this.#_controller.currentProject).todos;
 
         while (todoList.children.length != 0)
         {
             todoList.children[0].remove();
         }
+
+
+        const currentProjectId = this.#_controller.currentProject;
+
+        if (currentProjectId === null) return;
+
+        const currentTodos = this.#_controller.projects.get(currentProjectId).todos;
+
+
 
         for (const todo of currentTodos)
         {
@@ -170,13 +202,14 @@ export class DisplayController
     refreshProjects()
     {
         const projects = document.querySelector('.projects-container');
-        while (projects.children.length !== 1)
+        while (projects.children.length !== 2)
         {
             projects.children[0].remove();
-            console.log(this.#_controller.projects);
-            console.log(this.#_controller.currentProject);
         }
-        this.#_controller.projects.forEach((project) =>
+        const currentProjects = this.#_controller.projects;
+        if (currentProjects.size === 0) return;
+
+        currentProjects.forEach((project) =>
         {
             const div = document.createElement('div');
             div.textContent = project.title;
@@ -185,18 +218,24 @@ export class DisplayController
             div.addEventListener("click", (event) => this.changeActiveProject(event.target.dataset.id))
             projects.prepend(div);
         });
-
+        const currentProjectId = this.#_controller.currentProject;
+        if (currentProjectId === null) return;
         const currentProject = document.querySelector(`.projects-container .project[data-id ="${this.#_controller.currentProject}"]`);
+
         currentProject.classList.add("selected");
     }
 
     changeActiveProject(projectId)
     {
-        const previousActiveProject = document.querySelector('.project.selected')
-        previousActiveProject.classList.remove("selected");
         this.#_controller.changeCurrentProject(projectId);
-        const newActiveProject = document.querySelector(`.project[data-id = "${projectId}"]`);
-        newActiveProject.classList.add("selected");
+
+        if (projectId !== null){
+            const previousActiveProject = document.querySelector('.project.selected')
+            previousActiveProject.classList.remove("selected");
+            const newActiveProject = document.querySelector(`.project[data-id = "${projectId}"]`);
+            newActiveProject.classList.add("selected");
+        }
+
         this.refreshTodos();
     }
 
