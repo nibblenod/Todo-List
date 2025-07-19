@@ -230,10 +230,14 @@ dialog.todo-dialog {
 .todo-dialog button[type="submit"]
 {
     display: block;
-    margin-top: 1rem;
     background: white;
     color: black;
 }
+.todo-dialog button-container {
+    display: flex;
+}
+
+
 
 .todolist .todo.done {
     background: black;

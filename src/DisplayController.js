@@ -26,6 +26,13 @@ export class DisplayController
         const todoEditDialog = document.querySelector(".todo-dialog.edit");
         const todoEditDialogForm = todoEditDialog.querySelector(".todo-form.edit");
 
+        const deleteTodo = todoEditDialogForm.querySelector("button.delete-btn");
+
+        deleteTodo.addEventListener("click", (event) => {
+            event.preventDefault();
+            this.deleteTodo(todoEditDialogForm.dataset.id);
+            todoEditDialog.close();
+        })
 
         const editDialogAddTask = todoEditDialogForm.querySelector("button.add-task-btn");
 
@@ -175,6 +182,12 @@ export class DisplayController
         }
         else this.changeActiveProject(null);
         this.refreshProjects();
+    }
+
+    deleteTodo(todoId)
+    {
+        this.#_controller.deleteTodo(todoId);
+        this.refreshTodos();
     }
     addTodo(title, description, dueDate, priority, notes, checklist)
     {

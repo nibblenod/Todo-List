@@ -48,13 +48,10 @@ export class Controller {
         Object.assign(todoToEdit, {title, description, dueDate, priority, notes, checklist});
 
     }
-    // deleteTodo(todoId, projectId)
-    // {
-    //     if (this.#_currentProjects.has(projectId))
-    //     {
-    //         return this.#_currentProjects.get(projectId).todos.delete(todoId);
-    //     }
-    // }weqa
+    deleteTodo(todoId)
+    {
+        this.projects.get(this.currentProject).todos.delete(todoId);
+    }
 
 
 
