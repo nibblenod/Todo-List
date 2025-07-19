@@ -265,6 +265,11 @@ export class DisplayController
             todoDiv.textContent = todo[1].title;
             todoDiv.classList.add("todo");
 
+            if (todo[1].priority)
+            {
+                todoDiv.classList.add(`${todo[1].priority}-todo`);
+            }
+
             todoDiv.addEventListener("click", () => this.#_editHandler(todo[1]));
 
             if (todo[1].done)

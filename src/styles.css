@@ -169,7 +169,15 @@ dialog form input, textarea {
     border-radius: 10px;
     padding: 1rem;
     flex-grow: 1;
-
+}
+.todolist li .todo.high-todo {
+    outline: 3px solid red;
+}
+.todolist li .todo.medium-todo {
+    outline: 3px solid yellow;
+}
+.todolist li .todo.low-todo {
+    outline: 3px solid deepskyblue;
 }
 
 .todolist li .todo:hover {
@@ -239,9 +247,10 @@ dialog.todo-dialog {
 
 
 
-.todolist .todo.done {
+.todos .todolist .todo.done {
     background: black;
     color: white;
+    outline: 1px solid black;
 }
 
 .todolist ul .todo {
