@@ -207,6 +207,11 @@ export class DisplayController
         this.refreshProjects();
     }
 
+    toggleCurrentStateTodo(todoId)
+    {
+        this.#_controller.toggleCurrentStateTodo(todoId);
+        this.refreshTodos();
+    }
     refreshTodos() {
         const todoList = document.querySelector(".todos .todolist ul")
 
@@ -232,8 +237,7 @@ export class DisplayController
 
             checkmarkDiv.addEventListener("click", () => {
 
-                todo[1].done = !todo[1].done;
-                this.refreshTodos();
+                this.toggleCurrentStateTodo(todo[1].id);
             });
             listItem.dataset.id = todo[1].id;
 
