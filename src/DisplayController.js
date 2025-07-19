@@ -1,6 +1,7 @@
 import {Controller} from "./Controller";
 import {Project} from "./Models/Project";
 import {Todo} from "./Models/Todo";
+import {formatDistanceStrict} from "date-fns";
 
 export class DisplayController
 {
@@ -27,6 +28,18 @@ export class DisplayController
         const todoEditDialogForm = todoEditDialog.querySelector(".todo-form.edit");
 
         const deleteTodo = todoEditDialogForm.querySelector("button.delete-btn");
+
+
+        const todayDate = new Date();
+        let day = todayDate.getDate();
+        let month = todayDate.getMonth() + 1;
+        if (month.toString().length === 1) month = "0" + month;
+        let year = todayDate.getFullYear();
+
+        todoDialogForm.querySelector('input[type="date"]').min = `${year}-${month}-${day}`;
+        todoEditDialogForm.querySelector('input[type="date"]').min = `${year}-${month}-${day}`;
+
+
 
         deleteTodo.addEventListener("click", (event) => {
             event.preventDefault();
@@ -220,12 +233,11 @@ export class DisplayController
             todoList.children[0].remove();
         }
 
-
         const currentProjectId = this.#_controller.currentProject;
 
-        if (currentProjectId === null) return;
-
-        const currentTodos = this.#_controller.projects.get(currentProjectId).todos;
+        const currentProject = this.#_controller.projects.get(currentProjectId);
+        if (!currentProject) return;
+        const currentTodos = currentProject.todos;
 
 
 
@@ -260,16 +272,24 @@ export class DisplayController
                 todoDiv.classList.add("done");
             }
             else todoDiv.classList.remove("done");
+
+            if (todo[1].dueDate && !todo[1].done)
+            {
+                const dueDateDiv = document.createElement("div");
+                dueDateDiv.classList.add("duedate-container");
+
+                let dateDifference = formatDistanceStrict(todo[1].dueDate, new Date("2025-07-19"), {unit: "day"});
+                if (dateDifference === "0 days") dateDifference = "Today";
+                dueDateDiv.textContent = "Due Date: " + dateDifference + " remaining";
+                todoDiv.appendChild(dueDateDiv);
+            }
+
             listItem.appendChild(todoDiv);
 
             todoList.appendChild(listItem);
         }
 
-
-
-
     }
-
 
     #_editHandler(todo)
     {
@@ -301,8 +321,6 @@ export class DisplayController
         {
             this.#_checklistAddTask(checklists, item);
         }
-
-
 
     }
 

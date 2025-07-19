@@ -6,7 +6,7 @@ export class Controller {
     #_currentProjects = new Map();
     #_currentProjectId = null;
     constructor() {
-        if (localStorage.getItem("projects") !== null)
+        if (localStorage.getItem("projects") && JSON.parse(localStorage.getItem("projects")).length !== 0)
         {
             this.#_currentProjects = this.deserializeProjects(JSON.parse(localStorage.getItem("projects")));
             this.#_currentProjectId = localStorage.getItem("currentProject");
@@ -57,15 +57,17 @@ export class Controller {
     {
         const newProject = new Project(title, new Map());
         this.#_currentProjects.set(newProject.id, newProject);
-        if (this.currentProject === null) this.currentProject = newProject.id;
-
+        if (this.currentProject === null) {
+            this.currentProject = newProject.id;
+            localStorage.setItem("currentProject", newProject.id);
+        }
         localStorage.setItem("projects", JSON.stringify(this.serializeProjects(this.#_currentProjects)));
         return newProject.id;
     }
     deleteProject()
     {
+        this.#_currentProjects.delete(this.#_currentProjectId);
         localStorage.setItem("projects", JSON.stringify(this.serializeProjects(this.#_currentProjects)));
-        return this.#_currentProjects.delete(this.#_currentProjectId);
 
     }
     get projects()

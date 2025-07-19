@@ -244,6 +244,12 @@ dialog.todo-dialog {
     color: white;
 }
 
+.todolist ul .todo {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 2rem;
+}
+
 
 
 
