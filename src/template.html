@@ -35,18 +35,18 @@
             <form class="todo-form">
                 <div>
                     <label for="title">Title: </label>
-                    <input required id="title" type="text" placeholder="Title">
+                    <input required id="title" type="text" placeholder="Title" name="title">
                 </div>
 
                 <div>
                     <label for="description">Description:</label>
-                    <textarea id="description" placeholder="Description"></textarea>
+                    <textarea id="description" placeholder="Description" name="description"></textarea>
                 </div>
 
 
                 <div>
                     <label for="date"> Due Date:</label>
-                    <input id="date" type="date">
+                    <input id="date" type="date" name="dueDate">
                 </div>
 
 
@@ -72,7 +72,7 @@
 
                 <div>
                 <label for="notes">Notes:</label>
-                    <textarea id="notes"></textarea>
+                    <textarea id="notes" name="notes"></textarea>
                 </div>
 
                 <div class="checklist-container">
@@ -92,6 +92,62 @@
             <button class="cool-btn add-todo-button"> Add New Todo </button>
         </div>
         <div class="todolist">
+            <dialog class="todo-dialog edit">
+                <form class="todo-form edit">
+                    <div>
+                        <label for="titleEdit">Title: </label>
+                        <input required id="titleEdit" type="text" placeholder="Title" name="title">
+                    </div>
+
+                    <div>
+                        <label for="descriptionEdit">Description:</label>
+                        <textarea name="description" id="descriptionEdit" placeholder="Description"></textarea>
+                    </div>
+
+
+                    <div>
+                        <label for="dateEdit"> Due Date:</label>
+                        <input name="dueDate" id="dateEdit" type="date">
+                    </div>
+
+
+                    <div class="priority-container-external">
+                        <label>Priority:</label>
+                        <div class="priority-container">
+                            <div>
+                                <label for="highEdit">High</label>
+                                <input type="radio" id="highEdit" name="priority" value="high">
+                            </div>
+                            <div>
+                                <label for="mediumEdit">Medium</label>
+                                <input type="radio" id="mediumEdit" name="priority" value="medium">
+                            </div>
+                            <div>
+                                <label for="lowEdit">Low</label>
+                                <input type="radio" id="lowEdit" name="priority" value="low">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <label for="notesEdit">Notes:</label>
+                        <textarea name="notes" id="notesEdit"></textarea>
+                    </div>
+
+                    <div class="checklist-container">
+                        <label> Checklist:</label>
+                        <div class="checklists">
+
+                        </div>
+
+                    </div>
+                    <button class="cool-btn add-task-btn">Add Task</button>
+
+                    <button type="submit" class="cool-btn cool-btn-inverted">Add Todo</button>
+                </form>
+            </dialog>
             <ul>
              <li><div class="checkmark">✅</div><div class="todo">Do Laundry</div></li>
             </ul>

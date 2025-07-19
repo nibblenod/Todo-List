@@ -23,6 +23,9 @@ export class DisplayController
         const todoDialog = document.querySelector("dialog.todo-dialog")
         const todoDialogForm = document.querySelector('dialog.todo-dialog form');
 
+        todoDialog.addEventListener("close", () => {
+            this.#_dialogResetForm(todoDialogForm);
+        })
 
         addNewTodoButton.addEventListener("click", () => {
             if (this.#_controller.currentProject !== null)
@@ -40,12 +43,13 @@ export class DisplayController
 
     #_todoValuesRetrieverDialog()
     {
-        const title = document.querySelector(".todo-dialog form input#title")
-        const description = document.querySelector(".todo-dialog form textarea#description")
-        const dueDate = document.querySelector(".todo-dialog form input#date")
-        const priority = document.querySelector('.todo-dialog form input[type="radio"]:checked')
-        const notes = document.querySelector('.todo-dialog form textarea#notes');
-        const checkListElement = document.querySelector(".todo-dialog form .checklists")
+        const todoAddDialogForm = document.querySelector(".todo-dialog:not(.edit) form");
+        const title = todoAddDialogForm.querySelector("input#title")
+        const description = todoAddDialogForm.querySelector("textarea#description")
+        const dueDate = todoAddDialogForm.querySelector("input#date")
+        const priority = todoAddDialogForm.querySelector('input[type="radio"]:checked')
+        const notes = todoAddDialogForm.querySelector('textarea#notes');
+        const checkListElement = todoAddDialogForm.querySelector(".checklists")
 
         const checklist = new Array();
 
@@ -53,11 +57,25 @@ export class DisplayController
         {
             checklist.push(item.querySelector('input').value);
         }
-        const date = new Date(dueDate.value);
 
         let priorityValue = null;
         if (priority) priorityValue = priority.value;
-        this.addTodo(title.value, description.value, date, priorityValue, notes.value, checklist);
+        this.addTodo(title.value, description.value, dueDate.value, priorityValue, notes.value, checklist);
+
+        this.#_dialogResetForm(todoAddDialogForm);
+
+
+    }
+
+    #_dialogResetForm(todoAddDialogForm)
+    {
+        const title = todoAddDialogForm.querySelector('input[name="title"]')
+        const description = todoAddDialogForm.querySelector(`textarea[name="description"]`)
+        const dueDate = todoAddDialogForm.querySelector('input[name="dueDate"]');
+        const priority = todoAddDialogForm.querySelector('input[type="radio"]:checked')
+        const notes = todoAddDialogForm.querySelector('textarea[name="notes"]');
+        const checkListElement = todoAddDialogForm.querySelector(".checklists")
+
         title.value = "";
         description.value = "";
         dueDate.value = "";
@@ -66,28 +84,34 @@ export class DisplayController
         checkListElement.textContent = "";
     }
 
+    #_checklistAddTask(checklists, item = "")
+    {
+        const div = document.createElement("div");
+        const deleteButton = document.createElement("button");
+
+        deleteButton.addEventListener("click", (event) => {
+            event.target.parentElement.remove();
+        });
+
+        deleteButton.textContent = "❌";
+        deleteButton.classList.add("delete-btn");
+        const input = document.createElement("input");
+        input.required = true;
+        input.classList.add("task");
+        input.value = item;
+        div.appendChild(deleteButton);
+        div.appendChild(input);
+        checklists.appendChild(div);
+    }
+
     #_checklistInit()
     {
         const addNewTaskButton = document.querySelector(".add-task-btn")
         const checklists = document.querySelector(".checklist-container .checklists");
 
         addNewTaskButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            const div = document.createElement("div");
-            const deleteButton = document.createElement("button");
-
-            deleteButton.addEventListener("click", (event) => {
-                event.target.parentElement.remove();
-            });
-
-            deleteButton.textContent = "❌";
-            deleteButton.classList.add("delete-btn");
-            const input = document.createElement("input");
-            input.required = true;
-            input.classList.add("task");
-            div.appendChild(deleteButton);
-            div.appendChild(input);
-            checklists.appendChild(div);
+           event.preventDefault();
+           this.#_checklistAddTask(checklists);
         })
     }
 
@@ -184,6 +208,8 @@ export class DisplayController
             todoDiv.textContent = todo[1].title;
             todoDiv.classList.add("todo");
 
+            todoDiv.addEventListener("click", () => this.#_editHandler(todo[1]));
+
             if (todo[1].done)
             {
                 todoDiv.classList.add("done");
@@ -194,6 +220,40 @@ export class DisplayController
             todoList.appendChild(listItem);
         }
 
+
+
+
+    }
+
+
+    #_editHandler(todo)
+    {
+        const editDialog = document.querySelector(".todolist .todo-dialog.edit");
+        editDialog.showModal();
+
+        const editForm = editDialog.querySelector(".todo-form.edit");
+
+        const checklists = editDialog.querySelector(".checklists");
+
+        editForm.title.value = todo.title;
+        editForm.description.value = todo.description;
+        if (todo.priority) editForm.priority.value = todo.priority;
+        else {
+            editForm.priority.forEach((element) => {
+                if (element.checked) element.checked = false;
+            });
+        }
+
+        editForm.dueDate.value = todo.dueDate;
+
+        editForm.notes.value = todo.notes;
+
+
+        checklists.textContent = "";
+        for (const item of todo.checklist)
+        {
+            this.#_checklistAddTask(checklists, item);
+        }
 
 
 
