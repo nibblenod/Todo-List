@@ -41,6 +41,13 @@ export class Controller {
         const newTodo = new Todo(title, description, dueDate, priority, notes, checklist);
         this.#_currentProjects.get(this.#_currentProjectId).todos.set(newTodo.id, newTodo);
     }
+    editTodo(todoId, title, description, dueDate, priority, notes, checklist)
+    {
+        const todoToEdit = this.projects.get(this.currentProject).todos.get(todoId);
+
+        Object.assign(todoToEdit, {title, description, dueDate, priority, notes, checklist});
+
+    }
     // deleteTodo(todoId, projectId)
     // {
     //     if (this.#_currentProjects.has(projectId))

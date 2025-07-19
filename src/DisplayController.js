@@ -20,9 +20,27 @@ export class DisplayController
     #_todoInit()
     {
         const addNewTodoButton = document.querySelector(".add-todo-button");
-        const todoDialog = document.querySelector("dialog.todo-dialog")
-        const todoDialogForm = document.querySelector('dialog.todo-dialog form');
+        const todoDialog = document.querySelector("dialog.todo-dialog:not(.edit)")
+        const todoDialogForm = todoDialog.querySelector('form');
 
+        const todoEditDialog = document.querySelector(".todo-dialog.edit");
+        const todoEditDialogForm = todoEditDialog.querySelector(".todo-form.edit");
+
+
+        const editDialogAddTask = todoEditDialogForm.querySelector("button.add-task-btn");
+
+        const editChecklists = todoEditDialogForm.querySelector(".checklists");
+
+        editDialogAddTask.addEventListener("click", (event) => {
+            event.preventDefault();
+            this.#_checklistAddTask(editChecklists);
+        });
+
+
+        todoEditDialogForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            this.#_todoValuesRetrieverDialog(todoEditDialogForm, "edit");
+        });
         todoDialog.addEventListener("close", () => {
             this.#_dialogResetForm(todoDialogForm);
         })
@@ -33,7 +51,7 @@ export class DisplayController
         })
         todoDialogForm.addEventListener("submit", (event) => {
             event.preventDefault()
-            this.#_todoValuesRetrieverDialog();
+            this.#_todoValuesRetrieverDialog(todoDialogForm, "add");
 
         })
 
@@ -41,14 +59,14 @@ export class DisplayController
 
     }
 
-    #_todoValuesRetrieverDialog()
+    #_todoValuesRetrieverDialog(form, type)
     {
-        const todoAddDialogForm = document.querySelector(".todo-dialog:not(.edit) form");
-        const title = todoAddDialogForm.querySelector("input#title")
-        const description = todoAddDialogForm.querySelector("textarea#description")
-        const dueDate = todoAddDialogForm.querySelector("input#date")
+        const todoAddDialogForm = form;
+        const title = todoAddDialogForm.querySelector('input[name="title"]')
+        const description = todoAddDialogForm.querySelector(`textarea[name="description"]`)
+        const dueDate = todoAddDialogForm.querySelector('input[name="dueDate"]');
         const priority = todoAddDialogForm.querySelector('input[type="radio"]:checked')
-        const notes = todoAddDialogForm.querySelector('textarea#notes');
+        const notes = todoAddDialogForm.querySelector('textarea[name="notes"]');
         const checkListElement = todoAddDialogForm.querySelector(".checklists")
 
         const checklist = new Array();
@@ -60,7 +78,10 @@ export class DisplayController
 
         let priorityValue = null;
         if (priority) priorityValue = priority.value;
-        this.addTodo(title.value, description.value, dueDate.value, priorityValue, notes.value, checklist);
+
+        if (type === "add")
+            this.addTodo(title.value, description.value, dueDate.value, priorityValue, notes.value, checklist);
+        else this.editTodo(form.dataset.id, title.value, description.value, dueDate.value, priorityValue, notes.value, checklist);
 
         this.#_dialogResetForm(todoAddDialogForm);
 
@@ -160,6 +181,13 @@ export class DisplayController
         this.#_controller.createTodo(...arguments);
         this.refreshTodos();
     }
+
+    editTodo(todoId, title, description, dueDate, priority, notes, checklist)
+    {
+        this.#_controller.editTodo(todoId, title, description, dueDate, priority, notes, checklist);
+        this.refreshTodos();
+    }
+
     addProject(title)
     {
         this.#_controller.createProject(title);
@@ -247,6 +275,8 @@ export class DisplayController
         editForm.dueDate.value = todo.dueDate;
 
         editForm.notes.value = todo.notes;
+
+        editForm.dataset.id = todo.id;
 
 
         checklists.textContent = "";
