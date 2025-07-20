@@ -20,6 +20,8 @@ export class DisplayController
 
     #_todoInit()
     {
+        const closeButton = document.querySelector(".todo-dialog:not(.edit) button.close-dialog-button");
+        const closeEditButton = document.querySelector(".todo-dialog.edit button.close-dialog-button");
         const addNewTodoButton = document.querySelector(".add-todo-button");
         const todoDialog = document.querySelector("dialog.todo-dialog:not(.edit)")
         const todoDialogForm = todoDialog.querySelector('form');
@@ -29,6 +31,14 @@ export class DisplayController
 
         const deleteTodo = todoEditDialogForm.querySelector("button.delete-btn");
 
+        closeButton.addEventListener("click", (event) => {
+            event.preventDefault();
+           todoDialog.close();
+        });
+        closeEditButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            todoEditDialog.close();
+        });
 
         const todayDate = new Date();
         let day = todayDate.getDate();
